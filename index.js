@@ -70,12 +70,13 @@ function handleRepostClick(postId){
         return postId === post.uuid
     })[0]
 
+    console.log
     // INCREASE AND DECREASE THE REPOST BUTTON AND SETTING THE REPOST STATE
     if(targetRepostObj.isReposted){
-        targetRepostObj.repost--
+        targetRepostObj.reposts--
         targetRepostObj.isReposted = false
     } else {
-        targetRepostObj.repost++
+        targetRepostObj.reposts++
         targetRepostObj.isReposted = true
     }
 
@@ -167,34 +168,34 @@ function getPostFeeds(){
     
     let feedHtml = ""
     // LOOPING THROUGH post DATA TO APPEND TO FEED HTML
-    for ( let post of postsData){
+    for ( let posts of postsData){
 
         // CHECKING IF LIKE STATE HAS CHANGED TO ADD THE LIKED CLASS
         let likeIconClass = ''
 
-        if(post.isLiked){
+        if(posts.isLiked){
             likeIconClass = 'liked'
         }
 
         // CHECKING IF LIKE STATE HAS CHANGED TO ADD THE LIKED CLASS
         let repostIconClass = ''
         
-        if(post.isReposted){
+        if(posts.isReposted){
             repostIconClass = 'reposted'
         }
 
         // CHECKING IF LIKE STATE HAS CHANGED TO ADD THE LIKED CLASS
         let bookmarkIconClass = ''
 
-        if(post.isBookMarked){
+        if(posts.isBookMarked){
             bookmarkIconClass = 'bookmarked'
         }
 
         // LOOPING THROUGH REPLIES ARRAY TO APPEND TO REPLIES HTML
         let repliesHtml = ''
 
-        if(post.replies.length > 1){
-            for( let replies of post.replies){
+        if(posts.replies.length > 1){
+            for( let replies of posts.replies){
                 repliesHtml += `
                 <div class="post-reply">
                     <div class="post-inner">
@@ -214,9 +215,9 @@ function getPostFeeds(){
 
         // ADD A DELETE BUTTON FOR GUEST POST ONLY
         let deleteButtonHtml = '';
-        if (post.profileName === 'Guest') {
+        if (posts.profileName === 'Guest') {
             deleteButtonHtml = `
-            <i class="fa-solid fa-trash" data-delete="${post.uuid}"></i>`
+            <i class="fa-solid fa-trash" data-delete="${posts.uuid}"></i>`
         }
 
 
@@ -227,39 +228,39 @@ function getPostFeeds(){
         feedHtml += `
         <div class="post">
             <div class="post-inner">
-                    <a href="${post.profileLink}" target="_blank">
-                        <img class="profile-pic" src="${post.profilePic}">
+                    <a href="${posts.profileLink}" target="_blank">
+                        <img class="profile-pic" src="${posts.profilePic}">
                     </a>
                 <div>
-                    <a class="profile-name" href="${post.profileLink}" target="_blank">${post.profileName}</a>
-                    <a class="handle" href="${post.profileLink}" target="_blank">${post.handle}</a>
+                    <a class="profile-name" href="${posts.profileLink}" target="_blank">${posts.profileName}</a>
+                    <a class="handle" href="${posts.profileLink}" target="_blank">${posts.handle}</a>
                     <!-- Delete button here -->
                         ${deleteButtonHtml} 
                     <!-- Delete button here -->
-                    <p class="post-text">${post.postText}</p>
+                    <p class="post-text">${posts.postText}</p>
                     <div class="post-details">
                         <span class="post-detail">
-                            <i class="fa-regular fa-comment-dots" data-comment="${post.uuid}"></i> 
-                            ${post.replies.length}
+                            <i class="fa-regular fa-comment-dots" data-comment="${posts.uuid}"></i> 
+                            ${posts.replies.length}
                         </span>
                         <span class="post-detail">
-                            <i class="fa-solid fa-retweet ${repostIconClass}" data-repost="${post.uuid}"></i>
-                            ${post.reposts}
+                            <i class="fa-solid fa-retweet ${repostIconClass}" data-repost="${posts.uuid}"></i>
+                            ${posts.reposts}
                         </span>
                         <span class="post-detail">
-                            <i class="fa-solid fa-heart ${likeIconClass}" data-like="${post.uuid}"></i>
-                            ${post.likes}
+                            <i class="fa-solid fa-heart ${likeIconClass}" data-like="${posts.uuid}"></i>
+                            ${posts.likes}
                         </span>
                         </span>
                         <span class="post-detail">
-                            <i class="fa-solid fa-bookmark ${bookmarkIconClass}" data-bookmark="${post.uuid}"></i>
-                            ${post.bookmarks}
+                            <i class="fa-solid fa-bookmark ${bookmarkIconClass}" data-bookmark="${posts.uuid}"></i>
+                            ${posts.bookmarks}
                         </span>
                     </div>   
                 </div>            
             </div>
 
-            <div class="hidden" id="replies-${post.uuid}">
+            <div class="hidden" id="replies-${posts.uuid}">
                 ${repliesHtml}
             </div> 
 
